@@ -34,7 +34,7 @@ public class FilmeController : ControllerBase
         Filme filme = _mapper.Map<Filme>(filmeDto);
         _context.Filmes.Add(filme);
         _context.SaveChanges();
-        return CreatedAtAction(nameof(RecuperaFilmePorId), new { id = filme.Id }, filme);
+        return CreatedAtAction(nameof(RecuperaFilmePorId), new { Id = filme.Id }, filme);
     }
 
     /// <summary>
@@ -44,9 +44,9 @@ public class FilmeController : ControllerBase
     /// <returns>IEnumerable</returns>
     /// <response code="200">Caso de sucesso</response>
     [HttpGet]
-    public IEnumerable<ReadFilmeDto> RecuperFimes([FromQuery] int skip = 0, [FromQuery] int take = 6)
+    public IEnumerable<ReadFilmeDto> RecuperFimes([FromQuery] int skip = 0, [FromQuery] int take = 20)
     {
-        return _mapper.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(skip).Take(take));
+        return _mapper.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(skip).Take(take).ToList());
     }
 
     /// <summary>
