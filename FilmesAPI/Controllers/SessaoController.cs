@@ -32,7 +32,8 @@ public class SessaoController : ControllerBase
         Sessao sessao = _mapper.Map<Sessao>(sessaoDto);
         _context.Sessoes.Add(sessao);
         _context.SaveChanges();
-        return CreatedAtAction(nameof(RecuperaSessaoPorId), new { Id = sessao.Id }, sessao);
+        return CreatedAtAction(nameof(RecuperaSessaoPorId), 
+            new { filmeId = sessao.FilmeId, cinemaId = sessao.CinemaId }, sessao);
     }
 
     //CreatedAtAction
@@ -51,13 +52,14 @@ public class SessaoController : ControllerBase
     /// <summary>
     ///  mostra um sessão por id
     /// </summary>
-    /// <param name="id">Objeto com os campos necessários para mostra um sessão</param>
+    /// <param name="filmeId" name="cinemaId">Objeto com os campos necessários para mostra um sessão</param>
     /// <returns>IActionResult</returns>
     /// <response code="200">Caso de sucesso</response>
-    [HttpGet("{id}")]
-    public IActionResult RecuperaSessaoPorId(int id)
+    [HttpGet("{filmeId}/{cinemaId}")]
+    public IActionResult RecuperaSessaoPorId(int filmeId, int cinemaId)
     {
-        var sessao = _context.Sessoes.FirstOrDefault(sessao => sessao.Id == id);
+        var sessao = _context.Sessoes.FirstOrDefault(sessao => sessao.FilmeId == filmeId 
+        && sessao.CinemaId == cinemaId);
         if (sessao != null)
         {
             ReadSessaoDto sessaoDto = _mapper.Map<ReadSessaoDto>(sessao);
